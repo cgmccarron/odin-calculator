@@ -9,17 +9,33 @@ const equation = {
   operator: null,
 };
 
+const displayOut = () => {
+  if (equation.operator === null) {
+    display.textContent = equation.a;
+  } else {
+    if (equation.operator === "multiply") {
+      symbol = "X";
+    } else if (equation.operator === "divide") {
+      symbol = "\u00f7";
+    } else if (equation.operator === "add") {
+      symbol = "+";
+    } else if (equation.operator === "subtract") {
+      symbol = "-";
+    }
+    display.textContent = equation.a + " " + symbol + " " + equation.b;
+  }
+};
+
 //function to add two numbers
 const add = (num1, num2) => {
-  equation.operator = "waiting";
   equation.b = "";
   let sum = num1 + num2;
   equation.a = sum;
   return sum;
 };
+
 //function to subtract
 const subtract = (num1, num2) => {
-  equation.operator = "waiting";
   equation.b = "";
   let difference = num1 - num2;
   equation.a = difference;
@@ -27,19 +43,19 @@ const subtract = (num1, num2) => {
 };
 //function to multiply
 const multiply = (num1, num2) => {
-  equation.operator = "waiting";
   equation.b = "";
   let product = num1 * num2;
+  product = product.toFixed(4);
   equation.a = product;
   return product;
 };
 
 //function to divide
 const divide = (num1, num2) => {
-  equation.operator = "waiting";
   equation.b = "";
   if (num2 != 0) {
     let quotient = num1 / num2;
+    quotient = quotient.toFixed(4);
     equation.a = quotient;
     return quotient;
   } else if (num2 === 0) {
@@ -47,10 +63,28 @@ const divide = (num1, num2) => {
   }
 };
 
+//adds a negative to the number its on
+const toggleNegative = () => {
+  if (equation.b === "") {
+    equation.a = parseFloat(equation.a) * -1;
+  } else {
+    equation.b = parseFloat(equation.b) * -1;
+  }
+  displayOut();
+};
+
+//fucntion to clear
+const clear = () => {
+  equation.a = "";
+  equation.b = "";
+  equation.operator = null;
+  display.textContent = "clear";
+};
+
 //function that operates on two numbers;
 const operate = (num1, num2, operator) => {
-  num1 = parseInt(num1);
-  num2 = parseInt(num2);
+  num1 = parseFloat(num1);
+  num2 = parseFloat(num2);
   switch (operator) {
     case "add":
       return add(num1, num2);
@@ -82,32 +116,61 @@ icon.addEventListener("click", () => {
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     let value = button.getAttribute("value");
-    if (!Number.isFinite(parseFloat(value)) && value != "equals") {
-      //checking if value is an opperator
-      equation.operator = value;
-      console.log(value);
-    } else if (value === "equals") {
-      //checking if value is the equals button
-      if (equation.operator === null) {
-        display.textContent = "Need a sign";
-      } else if (equation.b === "" || equation.a === "") {
-        display.textContent = "Need a number";
-      } else {
-        display.textContent = operate(
-          equation.a,
-          equation.b,
-          equation.operator
-        );
-      }
-      console.log(value);
-    } else if (Number.isFinite(parseFloat(value))) {
-      //checking if the button was a number
-      if (equation.operator === null) {
-        equation.a = equation.a + value;
-      } else {
-        equation.b = equation.b + value;
-      }
-      display.textContent = equation.a + " " + equation.b;
+    switch (value) {
+      case "multiply":
+      case "divide":
+      case "add":
+      case "subtract":
+        if (equation.b === "") {
+          equation.operator = value;
+        } else {
+          operate(equation.a, equation.b, equation.operator);
+          equation.operator = value;
+        }
+        displayOut();
+        break;
+      case "decimal":
+        if (equation.operator === null) {
+          if (parseFloat(equation.a) % 1 === 0 && !equation.a.includes(".")) {
+            equation.a = equation.a + ".";
+          } else if (equation.a === "") {
+            equation.a = "0.";
+          }
+        } else {
+          if (parseFloat(equation.b) % 1 === 0 && !equation.b.includes(".")) {
+            equation.b = equation.b + ".";
+          } else if (equation.b === "") {
+            equation.b = "0.";
+          }
+        }
+        displayOut();
+        break;
+      case "ac":
+        clear();
+        break;
+      case "toggleNegative":
+        toggleNegative();
+        break;
+      case "equals":
+        if (equation.operator === null) {
+          display.textContent = "Need a sign";
+        } else if (equation.b === "" || equation.a === "") {
+          display.textContent = "Need a number";
+        } else {
+          display.textContent = operate(
+            equation.a,
+            equation.b,
+            equation.operator
+          );
+        }
+        break;
+      default:
+        if (equation.operator === null) {
+          equation.a = equation.a + value;
+        } else {
+          equation.b = equation.b + value;
+        }
+        displayOut();
     }
   });
 });
