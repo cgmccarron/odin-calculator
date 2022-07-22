@@ -6,6 +6,18 @@
   --orange: #faac46;
   --green: #74e349;
   --shadow: #888888;
+  --darkText: black;
+  --lightText: white;
+  --red: #fa1433;
+}
+
+.darkTheme {
+  --dark: #d9d6d2;
+  --darker: #ebe8e4;
+  --lightText: black;
+  --darkText: white;
+  --green: var(--red);
+  --lighter: #4f4e4d;
 }
 
 body {
@@ -31,7 +43,7 @@ footer {
 a {
   font-size: 1.5rem;
   text-decoration: none;
-  color: black;
+  color: var(--darkText);
   display: flex;
   align-items: center;
 }
@@ -84,9 +96,9 @@ img {
 
 .calButton {
   border-radius: 30%;
-  background-color: var(--light);
+  background-color: var(--dark);
   box-shadow: 5px 5px var(--shadow);
-  color: black;
+  color: var(--lightText);
   display: grid;
   justify-content: center;
   align-items: center;
@@ -102,4 +114,5 @@ img {
 
 .topRow {
   background-color: var(--lighter);
+  color: var(--darkText);
 }
