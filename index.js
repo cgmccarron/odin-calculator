@@ -30,6 +30,8 @@ const displayOut = () => {
 const add = (num1, num2) => {
   equation.b = "";
   let sum = num1 + num2;
+  sum = sum.toFixed(4);
+  sum = parseFloat(sum);
   equation.a = sum;
   return sum;
 };
@@ -38,6 +40,8 @@ const add = (num1, num2) => {
 const subtract = (num1, num2) => {
   equation.b = "";
   let difference = num1 - num2;
+  difference = difference.toFixed(4);
+  difference = parseFloat(difference);
   equation.a = difference;
   return difference;
 };
