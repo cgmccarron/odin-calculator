@@ -138,9 +138,9 @@ buttons.forEach((button) => {
       case "divide":
       case "add":
       case "subtract":
-        if (equation.b === "") {
+        if (equation.b === "" && equation.a != "") {
           equation.operator = value;
-        } else {
+        } else if (equation.a != "") {
           operate(equation.a, equation.b, equation.operator);
           equation.operator = value;
         }
