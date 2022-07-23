@@ -68,9 +68,9 @@ const divide = (num1, num2) => {
 //adds a function to turn a number into a percentage of 100
 const percentage = () => {
   if (equation.b === "") {
-    equation.a = (parseFloat(equation.a) / 100).toFixed(4);
+    equation.a = parseFloat((parseFloat(equation.a) / 100).toFixed(4));
   } else {
-    equation.b = (parseFloat(equation.b) / 100).toFixed(4);
+    equation.b = parseFloat((parseFloat(equation.b) / 100).toFixed(4));
   }
   displayOut();
 };
