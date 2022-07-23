@@ -46,6 +46,7 @@ const multiply = (num1, num2) => {
   equation.b = "";
   let product = num1 * num2;
   product = product.toFixed(4);
+  product = parseFloat(product);
   equation.a = product;
   return product;
 };
@@ -56,6 +57,7 @@ const divide = (num1, num2) => {
   if (num2 != 0) {
     let quotient = num1 / num2;
     quotient = quotient.toFixed(4);
+    quotient = parseFloat(quotient);
     equation.a = quotient;
     return quotient;
   } else if (num2 === 0) {
@@ -63,12 +65,24 @@ const divide = (num1, num2) => {
   }
 };
 
+//adds a function to turn a number into a percentage of 100
+const percentage = () => {
+  if (equation.b === "") {
+    equation.a = (parseFloat(equation.a) / 100).toFixed(4);
+  } else {
+    equation.b = (parseFloat(equation.b) / 100).toFixed(4);
+  }
+  displayOut();
+};
+
 //adds a negative to the number its on
 const toggleNegative = () => {
-  if (equation.b === "") {
-    equation.a = parseFloat(equation.a) * -1;
-  } else {
-    equation.b = parseFloat(equation.b) * -1;
+  if (equation.a != "") {
+    if (equation.b === "") {
+      equation.a = parseFloat(equation.a) * -1;
+    } else {
+      equation.b = parseFloat(equation.b) * -1;
+    }
   }
   displayOut();
 };
@@ -100,8 +114,6 @@ const operate = (num1, num2, operator) => {
   }
 };
 
-display.textContent = "Good Luck";
-
 icon.addEventListener("click", () => {
   //This is the toggle between light and dark themes
   content.classList.toggle("darkTheme");
@@ -117,6 +129,7 @@ buttons.forEach((button) => {
   button.addEventListener("click", () => {
     let value = button.getAttribute("value");
     switch (value) {
+      //for the values who are operators
       case "multiply":
       case "divide":
       case "add":
@@ -163,6 +176,9 @@ buttons.forEach((button) => {
             equation.operator
           );
         }
+        break;
+      case "percent":
+        percentage();
         break;
       default:
         if (equation.operator === null) {
